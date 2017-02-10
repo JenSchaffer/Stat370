@@ -11,3 +11,7 @@ y <- quad(x)
 
 plot(x,y,"l")
 #results in a line
+
+y2 <- quad(x,1,2,3)
+
+lines(x,y2) 
