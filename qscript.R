@@ -25,3 +25,6 @@ y5 <- quad(x,1,1,0)
 y6 <- quad(x,1,0,1)
 y7 <- quad(x,1,0,0)
 y8 <- quad(x,0,1,0)
+#these are the six possible cases
+
+#This homework taught me how to plot and graph functions. Also, this explains how to create a dynamic document using R Markdown.  

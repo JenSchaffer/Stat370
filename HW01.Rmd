@@ -47,4 +47,5 @@ lines(x,y7)
 lines(x,y8)
 #the six cases graphed
 
+#This homework taught me how to plot and graph functions. Also, this explains how to create a dynamic document using R Markdown.  
 ```
