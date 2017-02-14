@@ -1,3 +1,15 @@
+---
+title: "HW01"
+author: "Jennifer Schaffer"
+date: "February 14, 2017"
+output: html_document
+---
+``` {r HW01}
+
+```
+
+``` {r qscriptR}
+
 quad <- function(x,a=0,b=0,c=0) {
   return(a*x^2+b*x+c)
 } 
@@ -14,7 +26,7 @@ plot(x,y,"l")
 
 y2 <- quad(x,1,2,3)
 
-plot(x, y2, xlim=c(-10,10), ylim=c(-60,60), "l")
+plot(x, y2, xlim=c(-10,10), ylim=c(0,60), "l")
 lines(x,y)
 lines(x,y2) 
 #fixed axis and plotted curve and line 
@@ -25,3 +37,14 @@ y5 <- quad(x,1,1,0)
 y6 <- quad(x,1,0,1)
 y7 <- quad(x,1,0,0)
 y8 <- quad(x,0,1,0)
+#these are the six possible cases
+
+lines(x,y3)
+lines(x,y4)
+lines(x,y5)
+lines(x,y6)
+lines(x,y7)
+lines(x,y8)
+#the six cases graphed
+
+```
