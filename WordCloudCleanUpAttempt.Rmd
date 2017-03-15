@@ -1,0 +1,14 @@
+---
+title: "WordCloud"
+author: "Schaffer"
+date: "March 15, 2017"
+output: html_document
+---
+
+``` load("twitter authentication.Rdata")
+registerTwitterOAuth(cred)
+tweets <- searchTwitter(“#nba”, n=1499, cainfo=”cacert.pem”, lang=”en”)
+tweets.text <- sapply(tweets, function(x) x$getText())
+
+
+
