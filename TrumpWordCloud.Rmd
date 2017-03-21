@@ -13,11 +13,9 @@ Below is a word cloud derived from a sample of 50 recent tweets that include the
 search_term <- "Trump"  # For two terms use e.g. "compassion+love"
                              # For hashtags use e.g. "#compassion"
 language <- "en"
-sample_size <- 50
-AU_geocode <- '38.9375300,-77.0868600,10mi'  # Latitude, Longitude, Radius
-                                             # Here specifies 10 miles from AU campus
-since <- '2017-03-10'  # Election Day
-until <- '2017-03-13'  # INSERT Until Date, not used here
+sample_size <- 1000
+since <- '2017-03-20'  # Election Day
+until <- '2017-03-21'  # INSERT Until Date, not used here
 ##### EDIT SEARCH PARAMETERS ABOVE
 
 # NEXT 4 LINES LOAD LIBRARIES OF FUNCTIONS
@@ -25,6 +23,7 @@ library(twitteR)
 library(tm)
 library(wordcloud)
 library(RColorBrewer)
+library(ROAuth)
 
 # NEXT LINE AUTHENTICATES SESSION WITH TWITTER
 source("my_access.R")
@@ -32,7 +31,6 @@ source("my_access.R")
 ####### EDIT THE NEXT LINE TO SPECIFY SEARCH
 tweets_raw = searchTwitter(search_term, 
                            n=sample_size,
-                           geocode=AU_geocode,
                            since=since,
                            until=until,
                            lang=language)
@@ -55,9 +53,26 @@ tweets_transformed3 <- tm_map(tweets_transformed2,
 # NEXT LINE REMOVES "STOPWORDS" LIKE "THE", "AN", "IS", "BE", ETC.
 tweets_transformed4 <- tm_map(tweets_transformed3,
                               function(x) removeWords(x,stopwords()))
+# Replace blank space (“rt”)
+tweets_transformed5 <- gsub("rt", "", tweets_transformed4)
+
+# Replace @UserName
+tweets_transformed6 <- gsub("@\\w+", "", tweets_transformed5)
+
+# Remove links
+tweets_transformed7 <- gsub("http\\w+", "", tweets_transformed6)
+
+# Remove tabs
+tweets_transformed8 <- gsub("[ |\t]{2,}", "", tweets_transformed7)
+
+# Remove blank spaces at the beginning
+tweets_transformed9 <- gsub("^ ", "", tweets_transformed8)
+
+# Remove blank spaces at the end
+tweets_transformed10 <- gsub(" $", "", tweets_transformed9)
 
 ###### EDIT NEXT LINE TO SPECIFY DRAWING OF WORD CLOUD
-wordcloud(tweets_transformed4, random.order=FALSE, colors=brewer.pal(8,"Dark2"))
+wordcloud(tweets_transformed10, min.freq = 5, scale=c(7,0.5),colors=brewer.pal(8, "Dark2"),  random.color= TRUE, random.order = FALSE, max.words = 100)
 ```
 
 ## Code
