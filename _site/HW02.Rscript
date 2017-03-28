@@ -1,0 +1,15 @@
+<<<<<<< HEAD
+#HW02
+
+#Using "Import Dataset" located under the Enviroment tab, I imported the CVS file 
+  "C:\Users\js8376a\Downloads\2014_Homicides_and_Shootings.csv"
+  
+#This created a table of the Homicde and Shooting data
+  
+#Install rvest package yoyoyo
+=======
+#HW02: Injesting Baltimore City Data
+
+
+
+>>>>>>> 10aeed69b036c198c4695d58901ca12430560284

@@ -1,21 +1,25 @@
 ---
-title: "Word Cloud"
+title: "Trump Word Cloud"
 author: "Schaffer"
 date: "March 13, 2017"
 output: html_document
 ---
 
 ## Word cloud
-Below is a word cloud derived from a sample of 50 recent tweets that include the word "Trump" taken from the twitter archive.  I restricted the search to tweets posted from November 8, 2016, election day, to the present and from within 10 miles of the American University campus.
+I will eventually write an abstract.
 
 ```{r thewordcloud, results='hide', echo=FALSE, message=FALSE}
+# CONNECT TO MONGO DB #### EDIT
+library(smappR)
+mongo <- mongo.create("MONGO_HOST:PORT", db="DATABASE")
+mongo.authenticate(mongo, username='USERNAME', password='PASSWORD', db="DATABASE")
+set <- "DATABASE.COLLECTION"
+#### EDIT
+
 ##### EDIT SEARCH PARAMETERS BELOW
-search_term <- "Trump"  # For two terms use e.g. "compassion+love"
-                             # For hashtags use e.g. "#compassion"
+search_term <- "trump"  
 language <- "en"
-sample_size <- 1000
-since <- '2017-03-20'  # Election Day
-until <- '2017-03-21'  # INSERT Until Date, not used here
+sample_size <- 5000  
 ##### EDIT SEARCH PARAMETERS ABOVE
 
 # NEXT 4 LINES LOAD LIBRARIES OF FUNCTIONS
@@ -23,18 +27,14 @@ library(twitteR)
 library(tm)
 library(wordcloud)
 library(RColorBrewer)
-library(ROAuth)
 
 # NEXT LINE AUTHENTICATES SESSION WITH TWITTER
 source("my_access.R")
 
-####### EDIT THE NEXT LINE TO SPECIFY SEARCH
+# THE NEXT LINE TO SPECIFY SEARCH
 tweets_raw = searchTwitter(search_term, 
                            n=sample_size,
-                           since=since,
-                           until=until,
                            lang=language)
-####### EDIT THE PREVIOUS LINE TO SPECIFY SEARCH
 
 # NEXT TWO LINES REMOVES META-DATA THEN CONVERTS DATA TO A NEEDED FORMAT
 tweets_text = sapply(tweets_raw, function(x) x$getText())
@@ -42,7 +42,7 @@ tweets_corpus = Corpus(VectorSource(tweets_text))
 
 # NEXT LINE REMOVES SPECIAL CHARACTERS AVAILABLE IN OTHER LANGUAGES
 tweets_transformed1 <- tm_map(tweets_corpus, 
-                               content_transformer(function(x) iconv(x,
+                               content_transformer(function(x)iconv(x,
                                to="UTF-8")))
 # NEXT LINE CONVERTS EVERYTHING TO LOWER CASE
 tweets_transformed2 <- tm_map(tweets_transformed1,
@@ -51,30 +51,159 @@ tweets_transformed2 <- tm_map(tweets_transformed1,
 tweets_transformed3 <- tm_map(tweets_transformed2,
                               removePunctuation)
 # NEXT LINE REMOVES "STOPWORDS" LIKE "THE", "AN", "IS", "BE", ETC.
-tweets_transformed4 <- tm_map(tweets_transformed3,
-                              function(x) removeWords(x,stopwords()))
-# Replace blank space (“rt”)
-tweets_transformed5 <- gsub("rt", "", tweets_transformed4)
+tweets_transformed4 <- tm_map(tweets_transformed3,function(x) 
+                              x=removeWords(x,stopwords("english")))
+# NEXT LINE REMOVES NUMBERS
+tweets_transformed5 <- tm_map (tweets_transformed4, removeNumbers) 
 
-# Replace @UserName
-tweets_transformed6 <- gsub("@\\w+", "", tweets_transformed5)
+# NEXT LINE REPLACES (“rt”)
+tweets_transformed6 <- gsub("rt", "", tweets_transformed5)
 
-# Remove links
-tweets_transformed7 <- gsub("http\\w+", "", tweets_transformed6)
+# NEXT LIEN REPLACES @UserName
+tweets_transformed7 <- gsub("@\\w+", "", tweets_transformed6)
 
-# Remove tabs
-tweets_transformed8 <- gsub("[ |\t]{2,}", "", tweets_transformed7)
+# NEXT LINE REMOVES LINKS
+tweets_transformed8 <- gsub("http\\w+", "", tweets_transformed7)
 
-# Remove blank spaces at the beginning
-tweets_transformed9 <- gsub("^ ", "", tweets_transformed8)
+# NEXT LINE REMOVES TABS
+tweets_transformed9 <- gsub("[ |\t]{2,}", "", tweets_transformed8)
 
-# Remove blank spaces at the end
-tweets_transformed10 <- gsub(" $", "", tweets_transformed9)
+# NEXT LINE REMOVES BLANK SPACE FROM BEGINNING 
+tweets_transformed10 <- gsub("^ ", "", tweets_transformed9)
 
-###### EDIT NEXT LINE TO SPECIFY DRAWING OF WORD CLOUD
-wordcloud(tweets_transformed10, min.freq = 5, scale=c(7,0.5),colors=brewer.pal(8, "Dark2"),  random.color= TRUE, random.order = FALSE, max.words = 100)
+# NEXT LINE REMOVES BLANK SPACE FROM END 
+tweets <- gsub(" $", "", tweets_transformed10)
+
+# NEXT LINE TO SPECIFY DRAWING OF WORD CLOUD
+wordFreq <- word.frequencies(tweets$text)
+wordcloud(tweets, words=names(wordFreq), freq=wordFreq, scale=c(7,0.5),colors=brewer.pal(8, "Dark2"),  random.color= FALSE, random.order = FALSE, rot.per=0.1, max.words = 100)
 ```
 
+## Analysis
+
+```{r thepiechart, results='hide', echo=FALSE, message=FALSE}
+# NEXT LINE TELLS HOW MANY PEOPLE ARE TWEETING ABOUT TRUMP
+tweets_total <- count.tweets(set)
+tweets_trump <- count.tweets(set, string="trump")
+tweets_totalminustrump <- tweets_total-tweets_trump
+
+# NEXT LINE TURNS IT INTO A 3D PIE CHART
+library(plotrix)
+slices <- c(tweets_trump, tweets_totalminustrump)
+lbls <- c("Tweets about Trump", "Rest of Twitter")
+pie3D(slices,labels=lbls,explode=0.1,
+  	main="Percentage of Tweets about Trump on Twitter")
+```
+
+
+```{r demographic, results='hide', echo=FALSE, message=FALSE} 
+# NEXT LINE COUNTS HOW MANY TWEETS ABOUT TRUMP ARE FROM TRUMP
+tweets_bytrump <- count.tweets(set,screen_name="realdonaldtrump")
+tweets_trumpminusbytrump < tweets_trump-tweets_bytrump
+
+# NEXT LINE TURNS IT INTO A 3D PIE CHART
+library(plotrix)
+slices <- c(tweets_bytrump, tweets_trumpminusbytrump)
+lbls <- c("Tweets by Trump", "Rest of Trump Tweets")
+pie3D(slices,labels=lbls,explode=0.1,
+  	main="Percentage of Tweets about Trump by Trump")
+
+# NEXT LINE EXAMINES HOW MANY OF THESE TWEETS ARE REACTIONARY 
+tweets_retweet <- count.tweets(set, string="trump", retweets=TRUE)
+tweets_noretweet <- count.tweets(set, string="trump", retweets=FALSE)
+
+# NEXT LINE TURNS IT INTO A BAR CHART
+B <- c(tweets_retweet, tweets_noretweet)
+barplot(B, col="blue", main="Retweets vs. Orignal 'Trump Tweets'", ylab="Number of Tweets", names.arg=c("Retweets","Original"),
+border="red")
+```
+
+```{r patterns, results='hide', echo=FALSE, message=FALSE}
+# NEXT LINE WHAT TWEETS ARE MOST RETWEETED
+rts <- extract.retweets(set, screen_name="realdonaldtrump", min=5000)
+summary (rts, n=10)
+
+# NEXT LINE MOST USED HASHTAG 
+ht <- extract.hashtags(set, string="trump")
+summary(ht, n=10)
+
+# NEXT 'TRUMP' USAGE BY DAY
+tweets <- extract.tweets(set, string="trump")
+plot(tweets, breaks="days")
+
+```
+
+```{r ideology, results='hide', echo=FALSE, message=FALSE}
+# NEXT LINE DETERMINE IDEOLOGY
+user <- "realdonaldtrump"
+friends <- getFriends(screen_name=user,oauth_folder="~/my_access.R")
+results <- estimate.ideology(user, friends)
+
+# NEXT LINE DISPLAY TRACEPLOT FOR CONVERGENCE
+traceplot.ideology(results)
+
+# NEXT LINE COMPARE 
+ideology.plot(results)
+```
+
+```{r wordfreq, results='hide', echo=FALSE, message=FALSE}
+# NEXT LINE EXTRACTS TWEETS 
+tweets <- extract.recent.tweets(set, fields="text")
+
+# NEXT LINE COUNTS TWEETS 
+wordFreq <- word.frequencies(tweets$text)
+
+# NEXT LINE CREATES FREQUENCY
+word.frequencies <- function(text, stopwords=NULL, verbose=TRUE, sparsity=0.999){
+    require(tm)
+
+# NEXT LINES REMOVE PUNCTUATION 
+    cat("Removing punctuation... ")
+    text2 <- gsub("|\\\\|\\.|\\,|\\;|\\:|\\'|\\&|\\-|\\?|\\!|\\)|\\(|-|‘|\\n|\\’|\\“|\\[", "", text) 
+    text2 <- gsub('\\"', "", text2) 
+    cat("done!\n")
+    
+# NEXT LINES CREATE CORPUS 
+    myCorpus <- Corpus(VectorSource(text2))
+    if (Sys.info()['sysname']=="Windows"){
+        myCorpus <- tm_map(myCorpus, content_transformer(function(x) iconv(enc2utf8(x), sub = "byte")))
+    }
+   
+# NEXT LINE LOWER CASE
+    cat("Converting to lowercase... ")
+    myCorpus <- tm_map(myCorpus, content_transformer(tolower))
+    cat("done!\n")
+    
+# NEXT LINE REMOVES NUMBERS 
+    cat("Removing digits and URLs... ")
+    myCorpus <- tm_map(myCorpus, content_transformer(removeNumbers))
+    
+# NEXT LINE REMOVES URLS
+    removeURL <- function(x) gsub('"(http.*) |(http.*)$|\n', "", x)
+    cat("done!\n")
+    myCorpus <- tm_map(myCorpus, content_transformer(removeURL))
+
+# NEXT LINE CREATES MATRIX
+    cat("Counting words... ")
+    myTdm <- TermDocumentMatrix(myCorpus, control=list(minWordLength=3))
+    myTdm2 <- removeSparseTerms(myTdm, sparsity)   
+    cat("done!\n") 
+
+# NEXT LINE DOES FREQUENCY  
+    m <- as.matrix(myTdm2)
+    wordFreq <- sort(rowSums(m), decreasing=TRUE)  
+    
+# NEXT LINE REMOVES STOPWORDS
+    cat("Removing stopwords... ")
+    stopwords <- c(stopwords, "dont", "amp", "will", "heres")
+    wordFreq <- wordFreq[which(names(wordFreq) %in% 
+        c(stopwords('english'), stopwords)==FALSE)]
+    cat("done!")
+    return(wordFreq)
+
+}
+```
 ## Code
 
 Attached below is the code used to generate this document.  It contains text, markup, and code for connecting with twitter, downloading a sample of tweets, and creating the word cloud.
+
