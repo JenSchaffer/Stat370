@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ## Word cloud
-I will eventually write an abstract.
+I will eventually write an abstract. Today is not the day.
 
 ```{r thewordcloud, results='hide', echo=FALSE, message=FALSE}
 # CONNECT TO MONGO DB #### EDIT

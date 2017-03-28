@@ -6,7 +6,7 @@ output: html_document
 ---
 ## USA Word Cloud
 
-Abstract
+Abstract that i will eventually write. 
 
 ```{r USAwordcloud, results='hide', echo=FALSE, message=FALSE}
 # LIBRARIES
