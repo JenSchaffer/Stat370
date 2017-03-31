@@ -1,0 +1,37 @@
+#HW02
+
+Using "Import Dataset" located under the Enviroment tab, I imported the Excel file 
+
+  "C:/Users/Jennifer/Downloads/2014_Homicides_and_Shootings.xlsx"
+  
+Or I ran this code:
+
+```{r download, results='hide'}
+library(readxl)
+X2014_Homicides_and_Shootings <- read_excel("C:/Users/Jennifer/Downloads/2014_Homicides_and_Shootings.xlsx")
+View(X2014_Homicides_and_Shootings)
+```
+
+Next I bring up the first 6 rows:
+
+```{r display}
+head(X2014_Homicides_and_Shootings)
+```
+
+Next I plot the data:
+
+```{r plot}
+library(ggmap)
+library(ggplot2)
+df <- data.frame(X2014_Homicides_and_Shootings)
+lon2 <- sub("^\\(", "", X2014_Homicides_and_Shootings$Lon)
+lon <- as.numeric(lon2)
+lat2 <- sub(")", "", X2014_Homicides_and_Shootings$Lat)
+lat <- as.numeric(lat2)
+theme_set(theme_bw(16))
+BaltimoreMap <- qmap("Baltimore", zoom = 13, color = "bw", legend = "topleft")
+BaltimoreMap +
+geom_point(aes(x = lat, y = lon, colour = Description, size = Description),
+data = df)
+
+```
