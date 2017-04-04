@@ -208,33 +208,20 @@ X2014_Homicides_and_Shootings &lt;- read_excel(&quot;C:/Users/Jennifer/Downloads
 View(X2014_Homicides_and_Shootings)</code></pre>
 <p>Next I bring up the first 6 rows:</p>
 <pre class="r"><code>head(X2014_Homicides_and_Shootings)</code></pre>
-<pre><code>##   crimeCaseNumber  CrimeDate CrimeCode CrimeTime                 Location
+<pre><code>## # A tibble: 6 × 12
+##   crimeCaseNumber  CrimeDate CrimeCode CrimeTime                 Location
+##             &lt;dbl&gt;     &lt;dttm&gt;     &lt;chr&gt;     &lt;dbl&gt;                    &lt;chr&gt;
 ## 1              NA 2014-01-01        9S      2231             5900 EDNA AV
 ## 2              NA 2014-01-01        9S      1738      5100 QUEENSBERRY AV
 ## 3              NA 2014-01-01        1F      1520        3900 EDMONDSON AV
 ## 4              NA 2014-01-01        1F      1520        3900 EDMONDSON AV
 ## 5              NA 2014-01-02        1F      2115 1800 N Patterson Park Av
 ## 6              NA 2014-01-02        1F      2115 1800 N Patterson Park Av
-##   Description  Weapon Post     District         Neighborhood
-## 1    SHOOTING FIREARM  425 NORTHEASTERN       Glenham-Belhar
-## 2    SHOOTING FIREARM  614 NORTHWESTERN Central Park Heights
-## 3    HOMICIDE FIREARM  844 SOUTHWESTERN    Edmondson Village
-## 4    HOMICIDE FIREARM  844 SOUTHWESTERN    Edmondson Village
-## 5    HOMICIDE FIREARM  331      EASTERN        Broadway East
-## 6    HOMICIDE FIREARM  331      EASTERN        Broadway East
-##              Lon              Lat
-## 1 (39.3542200000  -76.5550700000)
-## 2 (39.3506000000  -76.6722800000)
-## 3 (39.2939000000  -76.6812700000)
-## 4 (39.2939000000  -76.6812700000)
-## 5 (39.3110600000  -76.5859100000)
-## 6 (39.3110600000  -76.5859100000)</code></pre>
+## # ... with 7 more variables: Description &lt;chr&gt;, Weapon &lt;chr&gt;, Post &lt;dbl&gt;,
+## #   District &lt;chr&gt;, Neighborhood &lt;chr&gt;, Lon &lt;chr&gt;, Lat &lt;chr&gt;</code></pre>
 <p>Next I plot the data:</p>
-<pre class="r"><code>library(ggmap)</code></pre>
-<pre><code>## Loading required package: ggplot2</code></pre>
-<pre><code>## Google Maps API Terms of Service: http://developers.google.com/maps/terms.</code></pre>
-<pre><code>## Please cite ggmap if you use it: see citation('ggmap') for details.</code></pre>
-<pre class="r"><code>library(ggplot2)
+<pre class="r"><code>library(ggmap)
+library(ggplot2)
 df &lt;- data.frame(X2014_Homicides_and_Shootings)
 lon2 &lt;- sub(&quot;^\\(&quot;, &quot;&quot;, X2014_Homicides_and_Shootings$Lon)
 lon &lt;- as.numeric(lon2)
