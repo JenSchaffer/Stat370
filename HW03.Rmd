@@ -1,0 +1,64 @@
+---
+title: "Homework 3"
+author: "Schaffer"
+date: "April 14, 2017"
+output: html_document
+---
+##Truncated Normal Distribution
+#Create Functions
+```{r functions}
+rmytnorm <- function(x) { 
+  
+  i<-1
+  returndata<-c()
+  while (i<=x){
+    rnormdata<-rnorm(x*2)
+    
+    if (rnormdata[i]>0){
+      returndata<-append(returndata,rnormdata[i])
+      i<-i+1
+    }
+    
+    else if (rnormdata[i]<0) {
+      next
+    }
+    
+  }
+  return(returndata)
+}
+
+
+dmytnorm<-function(x){
+  i<-1
+  returndata<-c()
+  while (i<=x){
+    rnormdata<-rnorm(x*2)
+    
+    if (rnormdata[i]>0){
+      returndata<-append(returndata,rnormdata[i])
+      i<-i+1
+    }
+    
+    else if (rnormdata[i]<0) {
+      returndata<-append(returndata,0)
+    }
+    
+  }
+  return(returndata)
+}
+
+```
+#rmytnorm
+```{r rmytnorm}
+res = rmytnorm(1000)
+head(res)
+
+hist(res, breaks = 50)
+```
+#dmytnorm
+```{r dmytnorm}
+res1 = dmytnorm(-10:10)
+res1
+
+plot(-10:10,res1)
+```
