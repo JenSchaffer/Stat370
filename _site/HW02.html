@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title></title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">My Website</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<div id="hw02" class="section level1">
+<h1>HW02</h1>
+<p>Using “Import Dataset” located under the Enviroment tab, I imported the Excel file</p>
+<p>“C:/Users/Jennifer/Downloads/2014_Homicides_and_Shootings.xlsx”</p>
+<p>Or I ran this code:</p>
+<pre class="r"><code>library(knitr)
+library(readxl)
+X2014_Homicides_and_Shootings &lt;- read_excel(&quot;C:/Users/Jennifer/Downloads/2014_Homicides_and_Shootings.xlsx&quot;)
+View(X2014_Homicides_and_Shootings)</code></pre>
+<p>Next I bring up the first 6 rows:</p>
+<pre class="r"><code>head(X2014_Homicides_and_Shootings)</code></pre>
+<pre><code>##   crimeCaseNumber  CrimeDate CrimeCode CrimeTime                 Location
+## 1              NA 2014-01-01        9S      2231             5900 EDNA AV
+## 2              NA 2014-01-01        9S      1738      5100 QUEENSBERRY AV
+## 3              NA 2014-01-01        1F      1520        3900 EDMONDSON AV
+## 4              NA 2014-01-01        1F      1520        3900 EDMONDSON AV
+## 5              NA 2014-01-02        1F      2115 1800 N Patterson Park Av
+## 6              NA 2014-01-02        1F      2115 1800 N Patterson Park Av
+##   Description  Weapon Post     District         Neighborhood
+## 1    SHOOTING FIREARM  425 NORTHEASTERN       Glenham-Belhar
+## 2    SHOOTING FIREARM  614 NORTHWESTERN Central Park Heights
+## 3    HOMICIDE FIREARM  844 SOUTHWESTERN    Edmondson Village
+## 4    HOMICIDE FIREARM  844 SOUTHWESTERN    Edmondson Village
+## 5    HOMICIDE FIREARM  331      EASTERN        Broadway East
+## 6    HOMICIDE FIREARM  331      EASTERN        Broadway East
+##              Lon              Lat
+## 1 (39.3542200000  -76.5550700000)
+## 2 (39.3506000000  -76.6722800000)
+## 3 (39.2939000000  -76.6812700000)
+## 4 (39.2939000000  -76.6812700000)
+## 5 (39.3110600000  -76.5859100000)
+## 6 (39.3110600000  -76.5859100000)</code></pre>
+<p>Next I plot the data:</p>
+<pre class="r"><code>library(ggmap)</code></pre>
+<pre><code>## Loading required package: ggplot2</code></pre>
+<pre class="r"><code>library(ggplot2)
+df &lt;- data.frame(X2014_Homicides_and_Shootings)
+lon2 &lt;- sub(&quot;^\\(&quot;, &quot;&quot;, X2014_Homicides_and_Shootings$Lon)
+lon &lt;- as.numeric(lon2)
+lat2 &lt;- sub(&quot;)&quot;, &quot;&quot;, X2014_Homicides_and_Shootings$Lat)
+lat &lt;- as.numeric(lat2)
+theme_set(theme_bw(16))
+BaltimoreMap &lt;- qmap(&quot;Baltimore&quot;, zoom = 13, color = &quot;bw&quot;, legend = &quot;topleft&quot;)</code></pre>
+<pre><code>## Map from URL : http://maps.googleapis.com/maps/api/staticmap?center=Baltimore&amp;zoom=13&amp;size=640x640&amp;scale=2&amp;maptype=terrain&amp;language=en-EN&amp;sensor=false</code></pre>
+<pre><code>## Information from URL : http://maps.googleapis.com/maps/api/geocode/json?address=Baltimore&amp;sensor=false</code></pre>
+<pre><code>## Warning: `panel.margin` is deprecated. Please use `panel.spacing` property
+## instead</code></pre>
+<pre class="r"><code>BaltimoreMap +
+geom_point(aes(x = lat, y = lon, colour = Description, size = Description),
+data = df)</code></pre>
+<pre><code>## Warning: Using size for a discrete variable is not advised.</code></pre>
+<pre><code>## Warning: Removed 229 rows containing missing values (geom_point).</code></pre>
+<p><img src="HW02_files/figure-html/plot-1.png" width="672" /></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
